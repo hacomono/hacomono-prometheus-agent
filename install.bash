@@ -1,4 +1,3 @@
-#! /bin/bash
 set -ue
 set -o pipefail
 
@@ -7,6 +6,7 @@ mv /etc/prometheus-nginxlog-exporter.hcl /etc/prometheus-nginxlog-exporter.hcl.o
 cat > /etc/prometheus-nginxlog-exporter.hcl <<'_EOD_'
 listen {
   port = 4040
+  metrics_endpoint = "/metrics"
 }
 
 namespace "nginx" {
