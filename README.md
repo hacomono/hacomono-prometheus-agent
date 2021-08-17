@@ -1,9 +1,9 @@
-# hacomonop-prometheus-agent
+# hacomonop-prometheus-nginxlog-exporter
 
 ## How to install (Amazon Linux)
 
 ```sh
-sudo bash -c "$(curl -L https://github.com/hacomono/hacomono-prometheus-agent/releases/download/v0.1.4/install.bash)"
+sudo bash -c "$(curl -L https://github.com/hacomono/hacomonop-prometheus-nginxlog-exporter/releases/download/v0.1.4/install.bash)"
 ```
 
 ## References
