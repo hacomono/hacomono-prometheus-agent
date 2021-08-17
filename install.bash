@@ -1,8 +1,7 @@
 set -ue
 set -o pipefail
 
-if [ ! -e /etc/prometheus-nginxlog-exporter.hcl ]; then
-yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.0/prometheus-nginxlog-exporter_1.9.0_linux_amd64.rpm
+yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.0/prometheus-nginxlog-exporter_1.9.0_linux_amd64.rpm || true
 mv /etc/prometheus-nginxlog-exporter.hcl /etc/prometheus-nginxlog-exporter.hcl.orig."$(date '+%Y%m%d')"
 cat > /etc/prometheus-nginxlog-exporter.hcl <<'_EOD_'
 listen {
@@ -37,7 +36,6 @@ namespace "nginx" {
   }
 }
 _EOD_
-fi
 
 if [ ! -e /etc/logrotate.d/nginx.patch ]; then
 cat > /etc/logrotate.d/nginx.patch <<'_EOD_'
