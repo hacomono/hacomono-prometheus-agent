@@ -37,23 +37,16 @@ namespace "nginx" {
 }
 _EOD_
 
-if [ ! -e /etc/logrotate.d/nginx.patch ]; then
-cat > /etc/logrotate.d/nginx.patch <<'_EOD_'
---- nginx.orig  2021-08-17 12:25:44.841912093 +0900
-+++ nginx       2021-08-17 12:26:41.358451393 +0900
-@@ -8,5 +8,6 @@
-     sharedscripts
-     postrotate
-         /etc/init.d/nginx reload
-+        service prometheus-nginxlog-exporter restart
-     endscript
- }
+if [ ! -f /etc/logrotate.d/nginx ] || grep -q "service prometheus-nginxlog-exporter restart" /etc/logrotate.d/nginx; then
+  echo "Already appended service prometheus-nginxlog-exporter restart"
+else
+  sed -i '/^}/d' /etc/logrotate.d/nginx
+  cat >> /etc/logrotate.d/nginx <<'_EOD_'
+    lastaction
+        service prometheus-nginxlog-exporter restart
+    endscript
+}
 _EOD_
-(
-  cd /etc/logrotate.d
-  cp nginx nginx.orig."$(date '+%Y%m%d')"
-  git apply nginx.patch
-)
 fi
 
 # No use systemctl for Amazon Linux 1

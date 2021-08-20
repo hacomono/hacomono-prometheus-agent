@@ -3,7 +3,7 @@
 ## How to install (Amazon Linux)
 
 ```sh
-sudo bash -c "$(curl -L https://github.com/hacomono/hacomono-prometheus-nginxlog-exporter/releases/download/v0.1.5/install.bash)"
+sudo bash -c "$(curl -L https://github.com/hacomono/hacomono-prometheus-nginxlog-exporter/releases/download/v0.1.6/install.bash)"
 ```
 
 ## References
