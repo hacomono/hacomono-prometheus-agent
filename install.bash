@@ -1,7 +1,7 @@
 set -ue
 set -o pipefail
 
-yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.0/prometheus-nginxlog-exporter_1.9.0_linux_amd64.rpm || true
+yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.0/prometheus-nginxlog-exporter_1.9.0_linux_amd64.rpm
 mv /etc/prometheus-nginxlog-exporter.hcl /etc/prometheus-nginxlog-exporter.hcl.orig."$(date '+%Y%m%d')"
 cat > /etc/prometheus-nginxlog-exporter.hcl <<'_EOD_'
 listen {
