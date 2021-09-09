@@ -4,8 +4,7 @@ set -o pipefail
 NGINXLOG_VERSION=1.9.0
 if hash systemctl; then
   # systemd
-  yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v${NGINXLOG_VERSION}/prometheus-nginxlog-exporter_${NGINXLOG_VERSION}_linux_amd64.rpm
-  mv /etc/prometheus-nginxlog-exporter.hcl /etc/prometheus-nginxlog-exporter.hcl.orig."$(date '+%Y%m%d')"
+  yum install -y https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v${NGINXLOG_VERSION}/prometheus-nginxlog-exporter_${NGINXLOG_VERSION}_linux_amd64.rpm || true
 
 else
   (
@@ -100,6 +99,7 @@ _EOD_
   )
 fi
 
+mv /etc/prometheus-nginxlog-exporter.hcl /etc/prometheus-nginxlog-exporter.hcl.orig."$(date '+%Y%m%d')" ||  true
 cat > /etc/prometheus-nginxlog-exporter.hcl <<'_EOD_'
 listen {
   port = 4040
