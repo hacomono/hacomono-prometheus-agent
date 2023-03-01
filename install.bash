@@ -115,14 +115,22 @@ namespace "nginx" {
 
   format = "$remote_addr - $remote_user [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" \"$http_x_forwarded_for\" rt=\"$request_time\" uct=\"$upstream_connect_time\" uht=\"$upstream_header_time\" urt=\"$upstream_response_time\""
 
-  # relabel "request_uri" {
-  #   from = "request"
-  #   split = 2
-  #   separator = " "
-  #   match "^/([^?]*).*" {
-  #     replacement = "/$1"
-  #   }
-  # }
+  histogram_buckets = [1]
+
+  relabel "request_uri" {
+    from = "request"
+    split = 2
+    separator = " "
+    match "^/api/system/dbfiles/.*" {
+      replacement = "/api/system/dbfiles"
+    }
+    match "^/api.*" {
+      replacement = "/api"
+    }
+    match "^.*" {
+      replacement = "/other"
+    }
+  }
 
   relabel "host" {
     from = "server_name"
@@ -130,6 +138,48 @@ namespace "nginx" {
 
   labels {
     app = "default"
+  }
+}
+
+namespace "path" {
+  source = {
+    files = [
+      "/var/log/nginx/access.log"
+    ]
+  }
+
+  format = "$remote_addr - $remote_user [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" \"$http_x_forwarded_for\" rt=\"$request_time\" uct=\"$upstream_connect_time\" uht=\"$upstream_header_time\" urt=\"$upstream_response_time\""
+
+  histogram_buckets = [1]
+
+  relabel "path" {
+    from = "request"
+    split = 2
+    separator = " "
+    match "^/api/system/dbfiles/.*" {
+      replacement = "/api/system/dbfiles"
+    }
+    match "^/api/v1/system/sharp-face/user/.*" {
+      replacement = "/api/v1/system/sharp-face/user"
+    }
+    match "^/api/(.*?)/[0-9]+/[0-9]+/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
+      replacement = "/api/$1/:id/:id/:id$2"
+    }
+    match "^/api/(.*?)/[0-9]+/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
+      replacement = "/api/$1/:id/:id$2"
+    }
+    match "^/api/(.*?)/[0-9]+/(.*?)/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
+      replacement = "/api/$1/:id/$2/:id$3"
+    }
+    match "^/api/(.*?)/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
+      replacement = "/api/$1/:id$2"
+    }
+    match "^/api/([^?]*).*" {
+      replacement = "/api/$1"
+    }
+    match "^.*" {
+      replacement = "/other"
+    }
   }
 }
 _EOD_
