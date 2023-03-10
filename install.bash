@@ -156,7 +156,7 @@ namespace "path" {
     from = "request"
     split = 2
     separator = " "
-    match "^/[^a].*" {
+    match "^/(?:[^a]|a[^p]|ap[^i]|api[^/]).*" {
       replacement = "/other"
     }
     match "^/api/system/dbfiles/.*" {
@@ -165,10 +165,10 @@ namespace "path" {
     match "^/api/v1/system/sharp-face/user/.*" {
       replacement = "/api/v1/system/sharp-face/user"
     }
-    match "^/api/master/studio-lessons/.*" {
-      replacement = "/api/master/studio-lessons"
+    match "^/api/master/studio-lessons/(.*?/)?[0-9A-Z]{8,}(?:$|\\?.*$|(/[^?]*).*$)" {
+      replacement = "/api/master/studio-lessons/$1:id$2"
     }
-    match "^/api/queries/[0-9]+/results/.*" {
+    match "^/api/queries/.*" {
       replacement = "/other"
     }
     match "^/api/(.*?)/[0-9]+/[0-9]+/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
@@ -183,8 +183,8 @@ namespace "path" {
     match "^/api/(.*?)/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
       replacement = "/api/$1/:id$2"
     }
-    match "^/api/((?:analysis|bootstrap|campaign|customize|debug|enquete|health|konami|mailer|master|member|oauth|pos|purchase|rena|report|reservation|stock|system|v1/docs|v1/enquete|v1/master|v1/member|v1/messages|v1/pos|v1/purchase|v1/reservation|v1/stock|v1/system|widget|words)[^?]*).*" {
-      replacement = "/api/$1"
+    match "^/api/(analysis|bootstrap|campaign|customize|debug|enquete|health|konami|mailer|master|member|oauth|pos|purchase|rena|report|reservation|stock|system|v1/docs|v1/enquete|v1/master|v1/member|v1/messages|v1/pos|v1/purchase|v1/reservation|v1/stock|v1/system|widget|words)([^?]*).*" {
+      replacement = "/api/$1$2"
     }
     match "^.*" {
       replacement = "/other"
