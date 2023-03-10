@@ -162,6 +162,15 @@ namespace "path" {
     match "^/api/v1/system/sharp-face/user/.*" {
       replacement = "/api/v1/system/sharp-face/user"
     }
+    match "^/api/master/studio-lessons/.*" {
+      replacement = "/api/master/studio-lessons"
+    }
+    match "^/api/queries/[0-9]+/results/.*" {
+      replacement = "/api/queries/:id/results/:id"
+    }
+    match "^/api/jobs/.*" {
+      replacement = "/api/jobs/:id"
+    }
     match "^/api/(.*?)/[0-9]+/[0-9]+/[0-9]+(?:$|\\?.*$|(/[^?]*).*$)" {
       replacement = "/api/$1/:id/:id/:id$2"
     }
